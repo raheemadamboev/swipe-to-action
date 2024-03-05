@@ -1,6 +1,9 @@
 package xyz.teamgravity.swipetoaction
 
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -9,11 +12,39 @@ import xyz.teamgravity.swipetoaction.databinding.CardNameBinding
 
 class MainAdapter : ListAdapter<NameModel, MainAdapter.MainViewHolder>(MainDiff) {
 
-    class MainViewHolder(private val binding: CardNameBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MainViewHolder(private val binding: CardNameBinding) : RecyclerView.ViewHolder(binding.root), SwipeTouchAdapter.SwipeLifecycle {
 
         fun bind(model: NameModel) {
             binding.apply {
+                root.background = regularBackground
                 nameT.text = model.name
+            }
+        }
+
+        override fun onSwipeStart() {
+            binding.apply {
+                root.background = curvedBackground
+                bottomLine.visibility = View.INVISIBLE
+            }
+        }
+
+        override fun onSwipeStop() {
+            binding.apply {
+                root.background = regularBackground
+                bottomLine.visibility = View.VISIBLE
+            }
+        }
+
+        private val regularBackground: GradientDrawable = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            setColor(Color.WHITE)
+        }
+
+        private val curvedBackground: GradientDrawable by lazy {
+            GradientDrawable().apply {
+                shape = GradientDrawable.RECTANGLE
+                setColor(Color.WHITE)
+                cornerRadius = binding.root.context.toPx(20).toFloat()
             }
         }
     }

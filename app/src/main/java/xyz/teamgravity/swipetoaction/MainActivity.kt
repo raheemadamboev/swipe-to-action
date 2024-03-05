@@ -1,6 +1,7 @@
 package xyz.teamgravity.swipetoaction
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import xyz.teamgravity.swipetoaction.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), SwipeTouchAdapter.SwipeTouchListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -51,6 +52,20 @@ class MainActivity : AppCompatActivity() {
             adapter = MainAdapter()
             recyclerview.setHasFixedSize(true)
             recyclerview.adapter = adapter
+            val swipe = SwipeTouchAdapter(
+                leftAction = SwipeTouchAdapter.SwipeTouchAction.fromResource(
+                    context = this@MainActivity,
+                    icon = R.drawable.ic_delete,
+                    background = R.color.red
+                ),
+                rightAction = SwipeTouchAdapter.SwipeTouchAction.fromResource(
+                    context = this@MainActivity,
+                    icon = R.drawable.ic_edit,
+                    background = R.color.blue
+                )
+            )
+            swipe.listener = this@MainActivity
+            swipe.attachToRecyclerView(recyclerview)
         }
     }
 
@@ -60,5 +75,15 @@ class MainActivity : AppCompatActivity() {
                 adapter.submitList(data)
             }
         }
+    }
+
+    override fun onSwipeClickLeft(position: Int) {
+        viewmodel.onDelete(position)
+    }
+
+    override fun onSwipeClickRight(position: Int) {
+        adapter.notifyItemChanged(position)
+        Toast.makeText(this, "Edit $position", Toast.LENGTH_SHORT).show()
+        // TODO handle action
     }
 }
