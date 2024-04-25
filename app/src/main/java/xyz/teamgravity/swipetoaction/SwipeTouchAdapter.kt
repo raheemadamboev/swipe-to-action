@@ -225,7 +225,7 @@ class SwipeTouchAdapter(
         val leftImageWidth = leftAction.icon.intrinsicWidth
         val leftImageHeight = leftAction.icon.intrinsicHeight
         val leftImageMargin = (difference - leftImageHeight) / 2
-        val leftImageTop = topPosition + (difference - leftImageHeight) / 2
+        val leftImageTop = topPosition + leftImageMargin
         val leftImageBottom = leftImageTop + leftImageHeight
         val leftImageLeft = leftPosition + leftImageMargin
         val leftImageRight = leftImageLeft + leftImageWidth
@@ -243,7 +243,7 @@ class SwipeTouchAdapter(
         val rightImageWidth = rightAction.icon.intrinsicWidth
         val rightImageHeight = rightAction.icon.intrinsicHeight
         val rightImageMargin = (difference - rightImageHeight) / 2
-        val rightImageTop = topPosition + (difference - rightImageHeight) / 2
+        val rightImageTop = topPosition + rightImageMargin
         val rightImageBottom = rightImageTop + rightImageHeight
         val rightImageRight = rightPosition - rightImageMargin
         val rightImageLeft = rightImageRight - rightImageWidth
